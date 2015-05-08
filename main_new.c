@@ -57,7 +57,13 @@ void delay(uint32_t dlyTicks)
   while ((msTicks - curTicks) < dlyTicks) ;
 }
 
+void usdelay(int n)
+{
+	int i,j;
+	for(j=0; j<n;j++)
+		for(i=0;i<24000;i++){/*nothing*/}
 
+}
 
 
 //lcd functions:
@@ -141,9 +147,9 @@ void LCD_PulseEnable ( void )
 {
 
 	GPIO->P[COM_PORT].DOUTSET = 1 << LCD_EN ;//LCD_EN = 1;
-	delay(10); // was 10
+	delay(2); // was 10
 	GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_EN ;//LCD_EN =0;
-	delay(10);
+	delay(2);
 
 }
 /*
@@ -155,17 +161,20 @@ void delay(void)
 } */
 void upper (unsigned int c)
 {
-	if(c & 0x80) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D7; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D7;
-	if(c & 0x40) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D6; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D6;
-	if(c & 0x20) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D5; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D5;
-	if(c & 0x10) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D4; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D4;
+
+	GPIO_PortOutSetVal (COM_PORT, (c>>4), 0x0F);
+//	if(c & 0x80) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D7; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D7;
+//	if(c & 0x40) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D6; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D6;
+//	if(c & 0x20) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D5; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D5;
+//	if(c & 0x10) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D4; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D4;
 }
 void lower(unsigned int c)
 {
-	if(c & 0x08) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D7; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D7;
-	if(c & 0x04) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D6; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D6;
-	if(c & 0x02) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D5; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D5;
-	if(c & 0x01) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D4; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D4;
+	GPIO_PortOutSetVal (COM_PORT, c, 0x0F);
+//	if(c & 0x08) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D7; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D7;
+//	if(c & 0x04) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D6; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D6;
+//	if(c & 0x02) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D5; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D5;
+//	if(c & 0x01) GPIO->P[COM_PORT].DOUTSET = 1 << LCD_D4; else GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_D4;
 }
 void LCD_PutChar ( unsigned int c )
 {
@@ -260,7 +269,7 @@ void UART_configs()
 /**************************************************************************//**
  * @brief  Main function
  *****************************************************************************/
-char c[]="******";
+char c[]="******oabo";
 int main(void)
 {
   chip_configs();
