@@ -118,6 +118,7 @@ void LCD_PutCmd ( unsigned int c )
 	GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_RS;
 /* this subroutine works specifically for 4-bit Port A */
 	upper ( c ); /* send high nibble */
+	delay(2);
 	LCD_PulseEnable();
 
 	//delay(2);
@@ -140,9 +141,9 @@ void LCD_PulseEnable ( void )
 {
 
 	GPIO->P[COM_PORT].DOUTSET = 1 << LCD_EN ;//LCD_EN = 1;
-	delay(1); // was 10
+	delay(10); // was 10
 	GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_EN ;//LCD_EN =0;
-	delay(1);
+	delay(10);
 
 }
 /*
@@ -171,6 +172,7 @@ void LCD_PutChar ( unsigned int c )
 /* this subroutine works specifically for 4-bit Port A */
 	GPIO->P[COM_PORT].DOUTSET = 1 << LCD_RS;
 	upper ( c ); /* send high nibble */
+    delay(1);
 	LCD_PulseEnable();
 	//delay(2);
 	lower ( c ); /* send low nibble */
@@ -258,7 +260,7 @@ void UART_configs()
 /**************************************************************************//**
  * @brief  Main function
  *****************************************************************************/
-char c[]="hellooooooooooooo ";
+char c[]="******";
 int main(void)
 {
   chip_configs();
@@ -283,4 +285,3 @@ int main(void)
 	  }
   }
 }
-
