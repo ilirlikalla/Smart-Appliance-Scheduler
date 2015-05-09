@@ -63,4 +63,3 @@ typedef struct
 } menu_t;  
  uint8_t oc,choice;
  menu_t current;
-   
