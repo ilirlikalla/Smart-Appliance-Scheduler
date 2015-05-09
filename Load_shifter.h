@@ -28,10 +28,22 @@
 //Updated upstream:Load_shifter.h
 #define PB0 9
 #define PB1 10
+
+
+// common lines:
 #define Recieved (USART1->STATUS & (1 << 7))
+#define Button0pressed op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 
+
 //=======
 //Stashed changes:LCD_40.h
 
+#define SIZE 256
+
+typedef struct{
+     char buffer[SIZE];
+     int sp;
+     } stack_t;
+     
 void LCD_Init1 ( void );
 #define LCD_SetPosition(a) LCD_PutCmd( (a) | 0x80)
 //void LCD_SetPosition ( unsigned int c );

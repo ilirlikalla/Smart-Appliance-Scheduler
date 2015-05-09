@@ -152,7 +152,7 @@ char s1[8];
 //		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
 //		  	  lcd_str(s,3,0);
 
-		  	if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
+		  	if( Button0pressed)
 		  	{
 		  		if(choice==1)
 			      GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
