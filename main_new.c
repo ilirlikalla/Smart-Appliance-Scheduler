@@ -166,9 +166,10 @@ int main(void)
 
   /* Infinite loop */
   while (1) {
-	  lcd_str(s,0x00);
-	  lcd_str(s2,0x40);
-	  lcd_str(s3,0x10);
+	  lcd_str("line 1",0,0);
+	  lcd_str("line 2",1,4);
+	  lcd_str("line 3",2,8);
+	  lcd_str("line 4",3,10);
 	  //c[0]++;
 	  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
 	  delay(100);

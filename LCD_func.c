@@ -121,8 +121,16 @@ void LCD_PutChar ( unsigned int c )
 	//GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_RS;
 }
 uint8_t pos;
-void lcd_str( char *c ,uint8_t p)
-{LCD_SetPosition(p);
+void lcd_str( char *c ,uint8_t row, uint8_t col)//  indexes start at 0
+{
+	uint8_t line;
+
+	if (row == 1) line= 4;
+	else if (row == 2) line= 1;
+	else if (row == 3) line= 5;
+	else line=row;
+	uint8_t p=col+ (line<<4);
+	LCD_SetPosition(p);
     int i=0,n=40;
     for(i=0;i<strlen(c);i++)
     {
