@@ -96,7 +96,7 @@ void delay(uint32_t dlyTicks)
 char s[16],s2[16],s3[2]={0x10,'\0'};
 
 
-void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3){
+void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3, menu_t menu4, menu_t menu5){
 	if (current.nr == 1){
 
 		  lcd_str("Main Menu     ",0,1);
@@ -104,69 +104,42 @@ void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3){
 		  lcd_str("Tasks         ",2,4);
 		  lcd_str("ok            ",3,0);
 		  lcd_str("move          ",3,11);
-		  //c[0]++;
 
-						   // if we have a valid character
-		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-		  //USART1->TXDATA = 'k';     // echo received char
-		  //GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 		  lcd_str(">",choice,3);
 		  lcd_str(" ",oc,3);
-
-//		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
-//		  	  lcd_str(s,3,0);
 
 		  	  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
 		  	  {
 				if(choice==1){
 					current=menu2;
-					//lcd_str("1",1,0);
 				}
-			//	  GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
 				else if (choice == 2){
 					current=menu3;
-					//lcd_str("2",1,0);
 				}
-			//	  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 			}
 
 	}
-	else if (current.nr == 2){
+	else if (current.nr == 2){ // start menu
 
 
 		  lcd_str("Time:         ",0,1);
 		  lcd_str("accept        ",1,4);
 		  lcd_str("back          ",2,4);
-		  lcd_str("start now     ",3,4);
-		  //lcd_str("move",3,11);
-		  //c[0]++;
-
-						   // if we have a valid character
-		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-		  //USART1->TXDATA = 'k';     // echo received char
-		  //GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
+		  lcd_str("ok            ",3,0);
+		  lcd_str("move          ",3,11);
 		  lcd_str(">",choice,3);
 		  lcd_str(" ",oc,3);
 
-//		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
-//		  	  lcd_str(s,3,0);
 
 			  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
 			  {
-				if(choice==1){
-
+				if(choice==1){ // accept the schedule and start task
+					current=menu4;
 				}
-			//	  GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
-				else if (choice == 2){ // go back to main menu
-					//current=menu1;
-					current=menu1;
+				else if (choice == 2){ // go back to main menu. start now?
+					current=menu5;
 				}
-
-				else if (choice == 3){
-					//current=menu1;
-				}
-			//	  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
-			}
+	}
 
 
 
@@ -174,42 +147,78 @@ void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3){
 	else if (current.nr == 3){
 
 
-	  lcd_str("Current task     ",0,1);
-	  lcd_str("ID:            ",1,4);
-
-
-	  //lcd_str("move",3,11);
-	  //c[0]++;
-
-					   // if we have a valid character
-	  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-	  //USART1->TXDATA = 'k';     // echo received char
-	  //GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
+	  lcd_str("task ID        ",0,1);
+	  lcd_str("accept        ",1,4);
+	  lcd_str("back          ",2,4);
+	  lcd_str("ok            ",3,0);
+	  lcd_str("move          ",3,11);
 	  lcd_str(">",choice,3);
 	  lcd_str(" ",oc,3);
-
-//		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
-//		  	  lcd_str(s,3,0);
 
 		  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
 		  {
 			if(choice==1){
-
+				current=menu1;
 			}
-		//	  GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
 			else if (choice == 2){ // go back to main menu
 				//current=menu1;
 				current=menu1;
 			}
+		  }
+	}
 
-			else if (choice == 3){
-				//current=menu1;
+
+
+	else if (current.nr == 4){
+
+
+		  lcd_str("task started",0,1);
+
+		  lcd_str("accept        ",1,4);
+		  lcd_str("back          ",2,4);
+		  lcd_str("ok            ",3,0);
+		  lcd_str("move          ",3,11);
+
+		  lcd_str(">",choice,3);
+		  lcd_str(" ",oc,3);
+
+
+			  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
+			  {
+				if(choice==1){
+					current = menu1;
+				}
+				else if (choice == 2){ // go back to main menu
+					current=menu1;
+				}
 			}
-		//	  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+
+
 		}
 
 
+	else if (current.nr == 5){
+			  lcd_str("start now? ",0,1);
+			  lcd_str("accept        ",1,4);
+			  lcd_str("back          ",2,4);
+			  lcd_str("ok            ",3,0);
+			  lcd_str("move          ",3,11);
+
+			  lcd_str(">",choice,3);
+			  lcd_str(" ",oc,3);
+				  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
+				  {
+					if(choice==1){
+						current = menu1;
+					}
+					else if (choice == 2){ // go back to main menu
+						current=menu1;
+					}
+				}
 	}
+
+
+
 }
 // volatile uint32_t msTicks;
 // interrupt:
@@ -243,8 +252,10 @@ int main(void)
    choice=1;oc=2;
   /* Infinite loop */
   menu_t menu1={1,2};
-  menu_t menu2={2,3};
-  menu_t menu3={3,1};
+  menu_t menu2={2,2};
+  menu_t menu3={3,2};
+  menu_t menu4={4,2};
+  menu_t menu5={5,2};
 
   current=menu1; //start with menu1
 
@@ -290,7 +301,12 @@ char s1[8];
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 //=======
 
+<<<<<<< HEAD
 	   if(completed==1)
+=======
+
+	   if(Recieved)
+>>>>>>> origin/master
 	  				{
 	  					  //getserial(s1);
 	  					  if(strcmp(Buffer,"off")==0)
@@ -313,7 +329,7 @@ char s1[8];
 	  				}
 
 
-	  menuLCD(menu1, menu2, menu3);
+	  menuLCD(menu1, menu2,menu3 , menu4, menu5);
 //>>>>>>> Stashed changes
 //
 	  //}
