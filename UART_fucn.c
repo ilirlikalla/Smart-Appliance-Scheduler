@@ -20,7 +20,7 @@ void UART_init()
     USART1->CLKDIV = (621 << 6);                               // 152 will give 38400 baud rate (using 16-bit oversampling with 24MHz peripheral clock)
     USART1->CMD = (1 << 11) | (1 << 10) | (1 << 2) | (1 << 0); // Clear RX/TX buffers and shif regs, Enable Transmitter and Receiver
     USART1->IFC = 0x1FF9;                                      // clear all USART interrupt flags
-    //USART1->CLKDIV = (621 << 6);
+    
     USART1->ROUTE = 0x203; // Clear RX/TX buffers and shift regs, enable transmitter and receiver pins
     USART_IntClear(USART1, _UART_IF_MASK); // Clear any USART interrupt flags
     NVIC_ClearPendingIRQ(UART1_RX_IRQn);   // Clear pending RX interrupt flag in    NVIC
@@ -29,3 +29,24 @@ void UART_init()
     USART_Enable(USART1, usartEnable);     // Enable transmitter and receiver
 
 }
+void sendserial(char *c)
+{ 
+	int i=0;
+	for(i; i< strlen(c); i++)
+	{
+		while( !(USART1->STATUS & (1 << 6)) ); // wait for TX buffer to empty    
+		USART1->TXDATA = c[i];
+	}  
+}
+void getserial(char *c)
+{  
+   int i=0;
+   while(USART1->STATUS & (1 << 7)) // if RX buffer contains valid data   
+   {      
+   c[i] = USART1->RXDATA;       // store the data    
+   i++;
+   }
+   c[i]='\0';
+ }  
+
+

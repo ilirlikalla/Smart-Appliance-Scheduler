@@ -28,7 +28,7 @@
 //Updated upstream:Load_shifter.h
 #define PB0 9
 #define PB1 10
-
+#define Recieved (USART1->STATUS & (1 << 7))
 //=======
 //Stashed changes:LCD_40.h
 
@@ -41,7 +41,8 @@ void LCD_PulseEnable ( void );
 void upper (unsigned int c);
 void lower(unsigned int c);
 void LCD_PutChar ( unsigned int c );
-
+void getserial(char *c);
+void sendserial(char *c);
 typedef struct
 {
     uint8_t nr;    // menu nr.

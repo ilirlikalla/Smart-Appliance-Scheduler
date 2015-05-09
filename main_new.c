@@ -109,7 +109,7 @@ int main(void)
 //  unsigned char menu2 = 0; // 1-> start new task: opens the meu in which it is show  the time the sch calculates and the options for the user
 //  unsigned char menu3 = 0; // 2-> show status of current tasks: show the id of the task and the time in which it will be excecuted
 
-
+char s1[8];
   while (1) {
 //<<<<<<< Updated upstream
 	  //LCD_PutCmd ( 0x01 );
@@ -130,7 +130,7 @@ int main(void)
 
 	                   // if we have a valid character
 		 // if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-			  USART1->TXDATA = 'k';     // echo received char
+			  //USART1->TXDATA = 'k';     // echo received char
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 //=======
 
@@ -144,7 +144,7 @@ int main(void)
 
 						   // if we have a valid character
 		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-		  USART1->TXDATA = 'k';     // echo received char
+		  //USART1->TXDATA = 'k';     // echo received char
 		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 		  lcd_str(">",choice,3);
 		  lcd_str(" ",oc,3);
@@ -156,9 +156,12 @@ int main(void)
 		  	{
 		  		if(choice==1)
 			      GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
-				else
-				  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+
+
+
 		  	}
+
+
 
 	  }else if (current.nr == 2){
 
@@ -166,7 +169,27 @@ int main(void)
 
 	  }
 
+	   if(Recieved)
+	  				{
+	  					  getserial(s1);
+	  					  if(strcmp(s1,"off")==0)
+	  						  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 
+	  					  else if(strcmp(s1,"on")==0)
+	  						  GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
+	  					else if(strcmp(s1,"blink")==0)
+	  					{
+							GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+							delay(1000);
+							GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
+							delay(1000);
+							GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+							delay(1000);
+	  					} else
+	  					sendserial("Solar Ranger says: command wasn't recognized  :( !!! \n");
+	  					sendserial(s1);
+
+	  				}
 
 //>>>>>>> Stashed changes
 //
