@@ -67,7 +67,7 @@ char s[16],s2[16],s3[16];
 /**************************************************************************//**
  * @brief  Main function
  *****************************************************************************/
-char c[]="*camilos";
+//char c[]="*camilosssssssssss";
 
 int main(void)
 {
@@ -82,7 +82,20 @@ int main(void)
   TIMER_config();
   uint8_t choice=1,oc=1;
   /* Infinite loop */
+
+  // flags mor manage the interface in their different menus:
+  unsigned char menu = 1; // 1-> menu1; 2->menu2
+
+  unsigned char menu1 = 0; //defines the main 2 things to do:  1-> start new task; 2-> show statues of current tasks
+  unsigned char menu2 = 0; // 1-> start new task: opens the meu in which it is show  the time the sch calculates and the options for the user
+  unsigned char menu3 = 0; // 2-> show status of current tasks: show the id of the task and the time in which it will be excecuted
+
+  void menuLCD1(){
+
+  }
+
   while (1) {
+<<<<<<< Updated upstream
 	  //LCD_PutCmd ( 0x01 );
 	  lcd_str("Main menu:",0,0);
 	  lcd_str("start",1,7);
@@ -115,6 +128,34 @@ int main(void)
 		 // if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
 			  USART1->TXDATA = 'k';     // echo received char
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
+=======
+
+	  if (menu == 1){
+		  lcd_str("Main Menu",0,1);
+		  lcd_str("Start",1,4);
+		  lcd_str("Tasks",2,4);
+		  //lcd_str("deadline",2,8);
+		  //lcd_str("line 4",3,10);
+		  //c[0]++;
+		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
+		  delay(100);
+		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
+		  delay(100);
+		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
+						   // if we have a valid character
+		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
+		  USART1->TXDATA = 'k';     // echo received char
+		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
+
+	  }else if (menu == 2){
+
+	  }else if (menu ==3){
+
+	  }
+
+
+
+>>>>>>> Stashed changes
 //
 	  //}
   }

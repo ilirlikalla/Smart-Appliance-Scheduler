@@ -135,8 +135,6 @@ void lcd_str( char *c ,uint8_t row, uint8_t col)//  indexes start at 0
     for(i=0;i<strlen(c);i++)
     {
         LCD_PutChar(c[i]);
-
-
     }
 
 }
