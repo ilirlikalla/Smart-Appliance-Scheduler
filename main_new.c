@@ -27,6 +27,37 @@ void delay(uint32_t dlyTicks);
  * Interrupt Service Routine for system tick counter
  *****************************************************************************/
 uint8_t op0=1,op1=1;
+uint8_t completed=0;
+char rx_char,Buffer[256];
+void USART1_RX_IRQHandler(void)
+{
+	static int i=0;
+
+//	if (completed == 1)
+//		return;
+    while(USART1->STATUS & (1 << 7)) // while it has smth in buffer receiving
+                    {   // if RX buffer contains valid data
+                      Buffer[i] = USART1->RXDATA;
+                      if (Buffer[i] == '\n')
+                      {
+                    	  completed = 1;
+                    	  Buffer[i]='\0';
+                    	  i = 0;
+                    	  return;
+                      }
+                      i++;// store the data
+                    }
+    //if (Buffer[i-1]='\n')
+    //{ completed=1; Buffer[i]='\0';}
+//                    if(rx_char) {                     // if we have a valid character
+//                      if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
+//                        USART1->TXDATA = rx_char;     // echo received char
+//                        rx_char = 0;                  // reset temp variable
+//                      }
+//                    }
+
+
+}
 void SysTick_Handler(void)
 {
 
@@ -62,7 +93,8 @@ void delay(uint32_t dlyTicks)
 }
 
 
-char s[16],s2[16],s3[16];
+char s[16],s2[16],s3[2]={0x10,'\0'};
+
 
 void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3){
 	if (current.nr == 1){
@@ -224,15 +256,9 @@ int main(void)
 //  unsigned char menu2 = 0; // 1-> start new task: opens the meu in which it is show  the time the sch calculates and the options for the user
 //  unsigned char menu3 = 0; // 2-> show status of current tasks: show the id of the task and the time in which it will be excecuted
 
-<<<<<<< Updated upstream
+
 char s1[8];
-=======
 
-
-
-
-
->>>>>>> Stashed changes
   while (1) {
 //<<<<<<< Updated upstream
 	  //LCD_PutCmd ( 0x01 );
@@ -264,51 +290,15 @@ char s1[8];
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 //=======
 
-<<<<<<< Updated upstream
-	  if (current.nr == 1){
-		  lcd_str("Main Menu",0,1);
-		  lcd_str("Start",1,4);
-		  lcd_str("Tasks",2,4);
-		  lcd_str("ok",3,0);
-		  lcd_str("move",3,11);
-		  //c[0]++;
-
-						   // if we have a valid character
-		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
-		  //USART1->TXDATA = 'k';     // echo received char
-		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
-		  lcd_str(">",choice,3);
-		  lcd_str(" ",oc,3);
-
-//		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
-//		  	  lcd_str(s,3,0);
-
-		  	if( Button0pressed)
-		  	{
-		  		if(choice==1)
-			      GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
-
-
-
-		  	}
-
-
-
-	  }else if (current.nr == 2){
-
-	  }else if (current.nr ==3){
-
-	  }
-
-	   if(Recieved)
+	   if(completed==1)
 	  				{
-	  					  getserial(s1);
-	  					  if(strcmp(s1,"off")==0)
+	  					  //getserial(s1);
+	  					  if(strcmp(Buffer,"off")==0)
 	  						  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 
-	  					  else if(strcmp(s1,"on")==0)
+	  					  else if(strcmp(Buffer,"on")==0)
 	  						  GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
-	  					else if(strcmp(s1,"blink")==0)
+	  					else if(strcmp(Buffer,"blink")==0)
 	  					{
 							GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 							delay(1000);
@@ -318,13 +308,10 @@ char s1[8];
 							delay(1000);
 	  					} else
 	  					sendserial("Solar Ranger says: command wasn't recognized  :( !!! \n");
-	  					sendserial(s1);
-
+	  					sendserial(Buffer);
+	  					completed=0;
 	  				}
-=======
 
-	  //if (current.nr == 1){
->>>>>>> Stashed changes
 
 	  menuLCD(menu1, menu2, menu3);
 //>>>>>>> Stashed changes

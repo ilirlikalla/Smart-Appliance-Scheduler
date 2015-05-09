@@ -25,10 +25,14 @@ void UART_init()
     USART_IntClear(USART1, _UART_IF_MASK); // Clear any USART interrupt flags
     NVIC_ClearPendingIRQ(UART1_RX_IRQn);   // Clear pending RX interrupt flag in    NVIC
     NVIC_ClearPendingIRQ(UART1_TX_IRQn);   // Clear pending TX interrupt flag in NVIC
-
+    USART1->IEN = USART_IEN_RXDATAV;
+    NVIC_EnableIRQ(USART1_RX_IRQn);
+    //USART1->IEN |= (1<<2
     USART_Enable(USART1, usartEnable);     // Enable transmitter and receiver
 
 }
+
+   
 void sendserial(char *c)
 { 
 	int i=0;
