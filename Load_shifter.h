@@ -15,6 +15,7 @@
 #define UART_TX_pin 7      // PD0
 #define UART_RX_pin 6      // PD1
 #define LED_PORT gpioPortE
+#define BTN_PORT gpioPortB
 
 #define LCD_D4 0
 #define LCD_D5 1
@@ -24,7 +25,8 @@
 #define LCD_RS 5
 #define LED0 2
 #define LED1 3
-
+#define PB0 9
+#define PB1 10
 
 
 void LCD_Init1 ( void );
