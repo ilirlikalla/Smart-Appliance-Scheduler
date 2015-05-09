@@ -31,7 +31,7 @@
 
 //=======
 //Stashed changes:LCD_40.h
- uint8_t choice,oc;
+
 void LCD_Init1 ( void );
 #define LCD_SetPosition(a) LCD_PutCmd( (a) | 0x80)
 //void LCD_SetPosition ( unsigned int c );
@@ -42,4 +42,12 @@ void upper (unsigned int c);
 void lower(unsigned int c);
 void LCD_PutChar ( unsigned int c );
 
-
+typedef struct
+{
+    uint8_t nr;    // menu nr.
+    uint8_t maxch;// max choise
+    
+} menu_t;  
+ uint8_t oc,choice;
+ menu_t current;
+   

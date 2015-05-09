@@ -39,10 +39,10 @@ void SysTick_Handler(void)
 	{
 	 // GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 	  oc=choice;
-	  if(choice==1)
-		  choice=2;
-	  else
+	  if(choice==current.maxch)
 		  choice=1;
+	  else
+		  choice++;
 	}
     op0= GPIO_PinInGet(BTN_PORT, PB0);
    	op1= GPIO_PinInGet(BTN_PORT, PB1);
@@ -95,20 +95,20 @@ int main(void)
 
 
   LCD_Init1();
-  TIMER_config();
+  TIMER_config();\
    choice=1;oc=2;
   /* Infinite loop */
+  menu_t menu1={1,2};
+
+  current=menu1; //start with menu1
 
   // flags mor manage the interface in their different menus:
-  unsigned char menu = 1; // 1-> menu1; 2->menu2
+//  unsigned char menu = 1; // 1-> menu1; 2->menu2
+//
+//  unsigned char menu1 = 0; //defines the main 2 things to do:  1-> start new task; 2-> show statues of current tasks
+//  unsigned char menu2 = 0; // 1-> start new task: opens the meu in which it is show  the time the sch calculates and the options for the user
+//  unsigned char menu3 = 0; // 2-> show status of current tasks: show the id of the task and the time in which it will be excecuted
 
-  unsigned char menu1 = 0; //defines the main 2 things to do:  1-> start new task; 2-> show statues of current tasks
-  unsigned char menu2 = 0; // 1-> start new task: opens the meu in which it is show  the time the sch calculates and the options for the user
-  unsigned char menu3 = 0; // 2-> show status of current tasks: show the id of the task and the time in which it will be excecuted
-
-  void menuLCD1(){
-
-  }
 
   while (1) {
 //<<<<<<< Updated upstream
@@ -134,7 +134,7 @@ int main(void)
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 //=======
 
-	  if (menu == 1){
+	  if (current.nr == 1){
 		  lcd_str("Main Menu",0,1);
 		  lcd_str("Start",1,4);
 		  lcd_str("Tasks",2,4);
@@ -160,9 +160,9 @@ int main(void)
 				  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
 		  	}
 
-	  }else if (menu == 2){
+	  }else if (current.nr == 2){
 
-	  }else if (menu ==3){
+	  }else if (current.nr ==3){
 
 	  }
 
