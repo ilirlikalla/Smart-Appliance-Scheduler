@@ -31,11 +31,23 @@ void SysTick_Handler(void)
 {
 
   msTicks++;       /* increment counter necessary in Delay()*/
-  if(msTicks%3 ==0)
+  if(msTicks%20 ==0)
   {
-	op0= GPIO_PinInGet(BTN_PORT, PB0);
-	op1= GPIO_PinInGet(BTN_PORT, PB1);
+
+
+  if( op1==1 & GPIO_PinInGet(BTN_PORT, PB1)==0 )
+	{
+	 // GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+	  oc=choice;
+	  if(choice==1)
+		  choice=2;
+	  else
+		  choice=1;
+	}
+    op0= GPIO_PinInGet(BTN_PORT, PB0);
+   	op1= GPIO_PinInGet(BTN_PORT, PB1);
   }
+
 }
 
 /**************************************************************************//**
@@ -84,7 +96,7 @@ int main(void)
 
   LCD_Init1();
   TIMER_config();
-  uint8_t choice=1,oc=2;
+   choice=1;oc=2;
   /* Infinite loop */
 
   // flags mor manage the interface in their different menus:
@@ -129,29 +141,17 @@ int main(void)
 		  lcd_str("ok",3,0);
 		  lcd_str("move",3,11);
 		  //c[0]++;
-		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
-		  delay(100);
-		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
-		  delay(100);
-		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
+
 						   // if we have a valid character
 		  //if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
 		  USART1->TXDATA = 'k';     // echo received char
 		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
-
 		  lcd_str(">",choice,3);
-		  	  lcd_str(" ",oc,3);
+		  lcd_str(" ",oc,3);
+
 //		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
 //		  	  lcd_str(s,3,0);
-		  	  if( op1=1 & GPIO_PinInGet(BTN_PORT, PB1)==0 )
-		  	  {
-		  		 // GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
-		  		  oc=choice;
-		  		  if(choice==1)
-		  			  choice=2;
-		  		  else
-		  			  choice=1;
-		  	  }
+
 		  	if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
 		  	{
 		  		if(choice==1)

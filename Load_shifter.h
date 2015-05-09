@@ -31,7 +31,7 @@
 
 //=======
 //Stashed changes:LCD_40.h
-
+ uint8_t choice,oc;
 void LCD_Init1 ( void );
 #define LCD_SetPosition(a) LCD_PutCmd( (a) | 0x80)
 //void LCD_SetPosition ( unsigned int c );
