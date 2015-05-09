@@ -29,9 +29,13 @@ void delay(uint32_t dlyTicks);
 uint8_t op0=1,op1=1;
 void SysTick_Handler(void)
 {
-  op0= GPIO_PinInGet(BTN_PORT, PB0);
-  op1= GPIO_PinInGet(BTN_PORT, PB1);
+
   msTicks++;       /* increment counter necessary in Delay()*/
+  if(msTicks%3 ==0)
+  {
+	op0= GPIO_PinInGet(BTN_PORT, PB0);
+	op1= GPIO_PinInGet(BTN_PORT, PB1);
+  }
 }
 
 /**************************************************************************//**
@@ -80,7 +84,7 @@ int main(void)
 
   LCD_Init1();
   TIMER_config();
-  uint8_t choice=1,oc=1;
+  uint8_t choice=1,oc=2;
   /* Infinite loop */
 
   // flags mor manage the interface in their different menus:
@@ -95,26 +99,14 @@ int main(void)
   }
 
   while (1) {
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 	  //LCD_PutCmd ( 0x01 );
-	  lcd_str("Main menu:",0,0);
-	  lcd_str("start",1,7);
-	  lcd_str("scan",2,7);
+	  //lcd_str("Main menu:",0,0);
+	//  lcd_str("start",1,7);
+	 // lcd_str("scan",2,7);
 	  //lcd_str("ok",3,0);
 	 // lcd_str("move",3,11);
-	  lcd_str(">",choice,6);
-	  lcd_str(" ",oc,6);
-	  sprintf(s,"oc= %d ch= %d",oc, choice);
-	  lcd_str(s,3,0);
-	  if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
-	  {
-		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
-		  oc=choice;
-		  if(choice==1)
-			  choice=2;
-		  else
-			  choice=1;
-	  }
+
 	 // lcd_str(">",1,6);
 	  //c[0]++;
 	  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
@@ -128,14 +120,14 @@ int main(void)
 		 // if(USART1->STATUS & (1 << 6)) { // check if TX buffer is empty
 			  USART1->TXDATA = 'k';     // echo received char
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
-=======
+//=======
 
 	  if (menu == 1){
 		  lcd_str("Main Menu",0,1);
 		  lcd_str("Start",1,4);
 		  lcd_str("Tasks",2,4);
-		  //lcd_str("deadline",2,8);
-		  //lcd_str("line 4",3,10);
+		  lcd_str("ok",3,0);
+		  lcd_str("move",3,11);
 		  //c[0]++;
 		  GPIO->P[LED_PORT].DOUTCLR = 1 << LED0;
 		  delay(100);
@@ -147,6 +139,27 @@ int main(void)
 		  USART1->TXDATA = 'k';     // echo received char
 		  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 
+		  lcd_str(">",choice,3);
+		  	  lcd_str(" ",oc,3);
+//		  	  sprintf(s,"oc= %d ch= %d",oc, choice);
+//		  	  lcd_str(s,3,0);
+		  	  if( op1=1 & GPIO_PinInGet(BTN_PORT, PB1)==0 )
+		  	  {
+		  		 // GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+		  		  oc=choice;
+		  		  if(choice==1)
+		  			  choice=2;
+		  		  else
+		  			  choice=1;
+		  	  }
+		  	if( op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 )
+		  	{
+		  		if(choice==1)
+			      GPIO->P[LED_PORT].DOUTSET = 1 << LED1;
+				else
+				  GPIO->P[LED_PORT].DOUTCLR = 1 << LED1;
+		  	}
+
 	  }else if (menu == 2){
 
 	  }else if (menu ==3){
@@ -155,7 +168,7 @@ int main(void)
 
 
 
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 //
 	  //}
   }

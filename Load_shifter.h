@@ -25,12 +25,12 @@
 #define LCD_RS 5
 #define LED0 2
 #define LED1 3
-<<<<<<< Updated upstream:Load_shifter.h
+//Updated upstream:Load_shifter.h
 #define PB0 9
 #define PB1 10
 
-=======
->>>>>>> Stashed changes:LCD_40.h
+//=======
+//Stashed changes:LCD_40.h
 
 void LCD_Init1 ( void );
 #define LCD_SetPosition(a) LCD_PutCmd( (a) | 0x80)
