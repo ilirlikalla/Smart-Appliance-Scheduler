@@ -43,6 +43,7 @@ void delay(uint32_t dlyTicks);
  *****************************************************************************/
 void SysTick_Handler(void)
 {
+
   msTicks++;       /* increment counter necessary in Delay()*/
 }
 
@@ -60,11 +61,11 @@ void delay(uint32_t dlyTicks)
 
 void usdelay(uint16_t n)
 {
-	TIMER0->CNT= 0;
-
-
-    while(TIMER0->CNT<n);
-
+	int i=0, j=0;
+	for(i;i<n;i++)
+	{   j=0;
+		while(j++<24);
+	}
 }
 
 
@@ -149,9 +150,9 @@ void LCD_PulseEnable ( void )
 {
 
 	GPIO->P[COM_PORT].DOUTSET = 1 << LCD_EN ;//LCD_EN = 1;
-	delay(1); // was 10
+	usdelay(220); // was 10
 	GPIO->P[COM_PORT].DOUTCLR = 1 << LCD_EN ;//LCD_EN =0;
-	delay(1);
+	usdelay(220);
 
 }
 /*
@@ -281,7 +282,7 @@ void UART_configs()
 	sprintf(s,"f= %d",fr);
 	sprintf(s2,"fc= %d",fc);
 	sprintf(s3,"fh= %d %d",fh);
-	//uint16_t div= 4*((double)((double)fr/(16*baud))-1);
+	uint16_t div= 4*((double)((double)fr/(16*(long)baud))-1);
 	sprintf(s3,"fh= %d %d",fh,div);
 	// Use default value for USART1->CTRL: asynch mode, x16 OVS, lsb first, CLK idle low
     USART1->CLKDIV = (621 << 6);                               // 152 will give 38400 baud rate (using 16-bit oversampling with 24MHz peripheral clock)
