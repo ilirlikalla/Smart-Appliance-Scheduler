@@ -305,6 +305,7 @@ char s1[8];
 	   if(completed==1)
 
 
+
 	   if(Recieved)
 
 	  				{
