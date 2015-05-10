@@ -17,6 +17,27 @@
  ***************************************************************************/
 #include "Load_shifter.h"
 
+time curr_time={0};
+int32_t power=0;
+void time_init()
+{
+	//char s[20];
+
+	//sendserial("get_time\n");
+
+
+	     {    sendserial("get_time\n");
+	    	 delay(1000);
+			  sendserial("get_time\n");
+
+	     }
+	     while(completed==0);
+		completed=0;
+		sscanf(Buffer,"time %d:%d",&curr_time.h,&curr_time.m);
+		sscanf(Buffer,"time %d",&curr_time.h);
+
+
+}
 
 volatile uint32_t msTicks; /* counts 1ms timeTicks */
 
@@ -58,10 +79,24 @@ void USART1_RX_IRQHandler(void)
 
 
 }
+int32_t a, old_a;
 void SysTick_Handler(void)
 {
 
   msTicks++;       /* increment counter necessary in Delay()*/
+  if(msTicks%60000==0 )
+  {
+	  ++curr_time.m;
+	  if(curr_time.m==60)
+	  {
+		  ++curr_time.h;
+		  curr_time.m=0;
+	  }
+  }
+  if(curr_time.h==24)
+  		  curr_time.h=0;
+
+
   if(msTicks%20 ==0)
   {
 
@@ -77,7 +112,12 @@ void SysTick_Handler(void)
 	}
     op0= GPIO_PinInGet(BTN_PORT, PB0);
    	op1= GPIO_PinInGet(BTN_PORT, PB1);
+
   }
+
+
+
+
 }
 
 /**************************************************************************//**
@@ -89,6 +129,7 @@ void delay(uint32_t dlyTicks)
   uint32_t curTicks;
 
   curTicks = msTicks;
+
   while ((msTicks - curTicks) < dlyTicks) ;
 }
 
@@ -97,13 +138,24 @@ char s[16],s2[16],s3[2]={0x10,'\0'};
 
 
 void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3, menu_t menu4, menu_t menu5){
-	if (current.nr == 1){
 
+	old_a=a;
+	a= CAPLESENSE_getSliderPosition();
+
+	if (current.nr == 1){
+          if(a>-1 && old_a>-1)
+	      if(abs(a-old_a)>2) power+=10*(a-old_a);
+
+	      if(power<0) power=0;
+	      if(power>2000) power=2000;
+
+		   sprintf(s2,"%0004d",power);
 		  lcd_str("Main Menu     ",0,1);
 		  lcd_str("Start         ",1,4);
 		  lcd_str("Tasks         ",2,4);
-		  lcd_str("ok            ",3,0);
+		  lcd_str("ok",3,0);
 		  lcd_str("move          ",3,11);
+		  lcd_str(s2,3,3);
 
 		  lcd_str(">",choice,3);
 		  lcd_str(" ",oc,3);
@@ -121,8 +173,8 @@ void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3, menu_t menu4, menu_t menu
 	}
 	else if (current.nr == 2){ // start menu
 
-
-		  lcd_str("Time:         ",0,1);
+          sprintf(s,"Time: %02d:%02d   ",curr_time.h,curr_time.m);
+		  lcd_str(s,0,1);
 		  lcd_str("accept        ",1,4);
 		  lcd_str("back          ",2,4);
 		  lcd_str("ok            ",3,0);
@@ -244,12 +296,20 @@ void menuLCD(menu_t menu1, menu_t menu2, menu_t menu3, menu_t menu4, menu_t menu
 int main(void)
 {
   chip_configs();
+  CAPLESENSE_Init(0);
   GPIO_configs();
   UART_init();
 
   LCD_Init1();
-  TIMER_config();\
+  lcd_str("connecting",1,3);
+  //TIMER_config();
+  while(GPIO_PinInGet(COM_PORT, Status)==0);
+  lcd_str("getting time",1,2);
+  time_init();
+
+  lcd_str("did it",1,6);
    choice=1;oc=2;
+   LCD_PutCmd ( 0x01 ); /* clear display */
   /* Infinite loop */
   menu_t menu1={1,2};
   menu_t menu2={2,2};

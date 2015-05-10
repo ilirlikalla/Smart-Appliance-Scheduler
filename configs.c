@@ -35,6 +35,7 @@ void GPIO_configs()
 	 GPIO_PinModeSet(LED_PORT, LED1, gpioModePushPull, 3);
 	 GPIO_PinModeSet(BTN_PORT, PB0, gpioModeInput, 9);
 	 GPIO_PinModeSet(BTN_PORT, PB1, gpioModeInput, 10);
+	 GPIO_PinModeSet(COM_PORT, Status, gpioModeInput, 15);
 }
 void TIMER_config()
 {

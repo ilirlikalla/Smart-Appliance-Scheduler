@@ -7,8 +7,16 @@
 #include "em_usart.h"
 #include "em_system.h"
 #include "em_timer.h"
+#include "caplesenseconfig.h"
 
+#include "caplesense.h"
+
+#include "em_acmp.h"
+
+#include "em_int.h"
+#include "em_lesense.h"
 #include <string.h>     // required for strlen() function
+#include <math.h>
 //#iclude "LCD.c" //lcd functions
 // port definitions:
 #define COM_PORT gpioPortD // USART location #1: PD0 and PD1
@@ -25,6 +33,7 @@
 #define LCD_RS 5
 #define LED0 2
 #define LED1 3
+#define Status 15
 //Updated upstream:Load_shifter.h
 #define PB0 9
 #define PB1 10
@@ -33,7 +42,8 @@ extern char rx_char;
 // common lines:
 #define Recieved (USART1->STATUS & (1 << 7))
 #define Button0pressed op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 
-
+extern uint8_t completed;
+extern char rx_char,Buffer[256];
 //=======
 //Stashed changes:LCD_40.h
 
@@ -64,9 +74,13 @@ typedef struct
  uint8_t oc,choice;
  menu_t current;
  
+ typedef struct{
+	 uint8_t s;
+	 uint8_t m;
+	 uint8_t h;
+ } time;
  
- 
- 
+ extern int32_t power;
  
  
  

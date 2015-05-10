@@ -17,7 +17,7 @@ void UART_init()
 
 	
 	// Use default value for USART1->CTRL: asynch mode, x16 OVS, lsb first, CLK idle low
-    USART1->CLKDIV = (621 << 6);                               // 152 will give 38400 baud rate (using 16-bit oversampling with 24MHz peripheral clock)
+    USART1->CLKDIV = (152 << 6);                               // 152 will give 38400 baud rate (using 16-bit oversampling with 24MHz peripheral clock)
     USART1->CMD = (1 << 11) | (1 << 10) | (1 << 2) | (1 << 0); // Clear RX/TX buffers and shif regs, Enable Transmitter and Receiver
     USART1->IFC = 0x1FF9;                                      // clear all USART interrupt flags
     
