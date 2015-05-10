@@ -42,6 +42,7 @@ extern char rx_char;
 // common lines:
 #define Recieved (USART1->STATUS & (1 << 7))
 #define Button0pressed op0=1 & GPIO_PinInGet(BTN_PORT, PB0)==0 
+
 extern uint8_t completed;
 extern char rx_char,Buffer[256];
 //=======
@@ -72,7 +73,7 @@ typedef struct
     
 } menu_t;  
  uint8_t oc,choice;
- menu_t current;
+ uint8_t current;
  
  typedef struct{
 	 uint8_t s;
@@ -82,7 +83,19 @@ typedef struct
  
  extern int32_t power;
  
+ typedef struct{
+	 char name[16];
+	 uint8_t id;
+	 uint8_t pow;
+	 uint8_t duration;
+	 time deadline;
+	 time starttime;
+	 char status[16];
+	 int cost;
+
+ }task;
  
+ extern uint8_t nextid;
  
  
  
