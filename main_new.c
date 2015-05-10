@@ -301,12 +301,12 @@ char s1[8];
 			  GPIO->P[LED_PORT].DOUTSET = 1 << LED0;
 //=======
 
-<<<<<<< HEAD
+
 	   if(completed==1)
-=======
+
 
 	   if(Recieved)
->>>>>>> origin/master
+
 	  				{
 	  					  //getserial(s1);
 	  					  if(strcmp(Buffer,"off")==0)
